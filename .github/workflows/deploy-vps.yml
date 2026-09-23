@@ -2,29 +2,29 @@ name: Deploy to VPS
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
   workflow_dispatch:
 
 concurrency:
-  group: deploy-cxb-production
-  cancel-in-progress: false
+  group: deploy-cxb
+  cancel-in-progress: true
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+
     steps:
-      - name: Checkout repository
+      - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup SSH
+      - name: Setup SSH key
         run: |
           mkdir -p ~/.ssh
-          echo "${{ secrets.VPS_SSH_KEY }}" > ~/.ssh/id_ed25519
+          printf "%s\n" "${{ secrets.VPS_SSH_KEY }}" > ~/.ssh/id_ed25519
           chmod 600 ~/.ssh/id_ed25519
           ssh-keyscan -p ${{ secrets.VPS_PORT || '2222' }} -H "${{ secrets.VPS_HOST || '51.210.244.46' }}" >> ~/.ssh/known_hosts
 
-      - name: Deploy to VPS
+      - name: Deploy via SSH
         env:
           VPS_HOST: ${{ secrets.VPS_HOST || '51.210.244.46' }}
           VPS_PORT: ${{ secrets.VPS_PORT || '2222' }}
@@ -32,30 +32,31 @@ jobs:
           VPS_APP_DIR: ${{ vars.VPS_APP_DIR || '/home/debian/apps/cars-x-battle' }}
           VPS_COMPOSE_PROJECT: ${{ vars.VPS_COMPOSE_PROJECT || 'cxb' }}
         run: |
-          ssh -i ~/.ssh/id_ed25519 -p "$VPS_PORT" "$VPS_USER@$VPS_HOST" \
-            "APP_DIR=\"$VPS_APP_DIR\" PROJECT=\"$VPS_COMPOSE_PROJECT\" bash -s" << 'EOF'
-            set -euo pipefail
+          ssh -i ~/.ssh/id_ed25519 -p "$VPS_PORT" "$VPS_USER@$VPS_HOST" bash -s <<EOF
+            set -Eeuo pipefail
 
-            echo "==> Verification du repertoire de deploiement"
-            if [ ! -d "$APP_DIR/.git" ]; then
-              mkdir -p "$APP_DIR"
-              git clone https://github.com/Sofiane224434/cars-x-battle.git "$APP_DIR"
+            APP_DIR="$VPS_APP_DIR"
+            PROJECT="$VPS_COMPOSE_PROJECT"
+
+            echo "==> Verification du repertoire"
+            if [ ! -d "\$APP_DIR/.git" ]; then
+              mkdir -p "\$APP_DIR"
+              git clone https://github.com/Sofiane224434/cars-x-battle.git "\$APP_DIR"
             fi
 
-            cd "$APP_DIR"
-            echo "==> Mise a jour du code (git fetch & reset)"
+            cd "\$APP_DIR"
+            echo "==> Mise a jour du code"
             git fetch origin main
             git reset --hard origin/main
-            git clean -fd -e .env -e "backend/.env"
 
             if [ ! -f .env ]; then
-              echo "==> Creation du fichier .env minimal si absent"
+              echo "==> Creation du fichier .env"
               cat << 'ENV_EOF' > .env
 DB_ROOT_PASSWORD=cxb_root_password_secret
 DB_NAME=cars_x_battle
 DB_USER=cxb_user
 DB_PASSWORD=cxb_db_password_secret
-JWT_SECRET=cxb_jwt_super_secret_production_key_random
+JWT_SECRET=cxb_jwt_secret_super_key_2026
 JWT_EXPIRES_IN=7d
 APP_URL=https://cxb.azim404.com
 CORS_ORIGIN=https://cxb.azim404.com
@@ -63,21 +64,21 @@ ENV_EOF
             fi
 
             echo "==> Build et demarrage des conteneurs"
-            docker compose -f docker-compose.yml -p "$PROJECT" build
-            docker compose -f docker-compose.yml -p "$PROJECT" up -d --remove-orphans
-
-            echo "==> Verification des conteneurs"
-            docker compose -f docker-compose.yml -p "$PROJECT" ps
+            docker compose -f docker-compose.yml -p "\$PROJECT" build
+            docker compose -f docker-compose.yml -p "\$PROJECT" up -d --remove-orphans
 
             echo "==> Configuration Nginx"
-            if [ -f deploy/nginx/cxb.azim404.com.conf ]; then
-              sudo -n cp deploy/nginx/cxb.azim404.com.conf /etc/nginx/sites-available/cxb.azim404.com
+            if [ -f deploy/nginx/cxb.azim404.com-http.conf ]; then
+              sudo -n cp deploy/nginx/cxb.azim404.com-http.conf /etc/nginx/sites-available/cxb.azim404.com
               sudo -n ln -sf /etc/nginx/sites-available/cxb.azim404.com /etc/nginx/sites-enabled/cxb.azim404.com.conf
               if sudo -n nginx -t; then
                 sudo -n systemctl reload nginx
               fi
             fi
 
+            echo "==> Verification des conteneurs"
+            docker compose -f docker-compose.yml -p "\$PROJECT" ps
+
             echo "==> Nettoyage images orphelines"
             docker image prune -f
-          EOF
+EOF
