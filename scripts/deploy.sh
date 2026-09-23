@@ -31,8 +31,8 @@ docker compose -f docker-compose.yml -p "$PROJECT" build
 docker compose -f docker-compose.yml -p "$PROJECT" up -d --remove-orphans
 
 echo "==> Configuration Nginx"
-if [ -f deploy/nginx/cxb.azim404.com-http.conf ]; then
-  sudo -n cp deploy/nginx/cxb.azim404.com-http.conf /etc/nginx/sites-available/cxb.azim404.com
+if [ -f deploy/nginx/cxb.azim404.com.conf ]; then
+  sudo -n cp deploy/nginx/cxb.azim404.com.conf /etc/nginx/sites-available/cxb.azim404.com
   sudo -n ln -sf /etc/nginx/sites-available/cxb.azim404.com /etc/nginx/sites-enabled/cxb.azim404.com.conf
   if sudo -n nginx -t; then
     sudo -n systemctl reload nginx
