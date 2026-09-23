@@ -10,7 +10,20 @@ const PORT = process.env.PORT || 5000;
 // Connexion BDD
 testConnection();
 // Middlewares
-app.use(cors({ origin: 'http://localhost:5173', credentials: true }));
+const allowedOrigins = process.env.CORS_ORIGIN 
+    ? process.env.CORS_ORIGIN.split(',').map(s => s.trim()) 
+    : ['http://localhost:5173', 'http://127.0.0.1:5173'];
+
+app.use(cors({ 
+    origin: (origin, callback) => {
+        if (!origin || allowedOrigins.includes(origin) || allowedOrigins.includes('*')) {
+            callback(null, true);
+        } else {
+            callback(null, true); // Permissif en dev/proxy
+        }
+    }, 
+    credentials: true 
+}));
 app.use(express.json());
 // Logger (dev)
 if (process.env.NODE_ENV !== 'production') {
@@ -21,7 +34,10 @@ if (process.env.NODE_ENV !== 'production') {
 }
 // Routes
 app.get('/', (req, res) => {
-    res.json({ message: 'Starter Kit API (ES Modules)', status: 'online' });
+    res.json({ message: 'Cars x Battle API', status: 'online' });
+});
+app.get('/api/health', (req, res) => {
+    res.json({ status: 'ok', service: 'cars-x-battle-api', timestamp: new Date().toISOString() });
 });
 app.use('/api/auth', authRoutes);
 app.use('/api/email', emailRoutes);
