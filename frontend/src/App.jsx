@@ -1,7 +1,7 @@
 import React from 'react';
 import { Routes, Route, Navigate, useNavigate } from 'react-router-dom';
 import MainLayout from './layouts/MainLayout.jsx';
-import HubGXB2 from './pages/HubGXB2.jsx';
+import CampusScreen from './pages/CampusScreen.jsx';
 import Hangar from './pages/Hangar.jsx';
 import BattleView from './pages/BattleView.jsx';
 import CampaignView from './pages/CampaignView.jsx';
@@ -16,7 +16,7 @@ function AppContent() {
   return (
     <Routes>
       <Route element={<MainLayout />}>
-        <Route path="/" element={<HubGXB2 onNavigate={(dest) => navigate(`/${dest === 'hub' ? '' : dest}`)} />} />
+        <Route path="/" element={<CampusScreen onNavigate={(dest) => navigate(`/${dest === 'campus' ? '' : dest}`)} />} />
         <Route path="/hangar" element={<Hangar />} />
         <Route path="/battle" element={<BattleView />} />
         <Route path="/campaign" element={<CampaignView />} />

@@ -431,66 +431,63 @@ export default function BattleView() {
             </div>
           </div>
 
-          {/* Arène Visuelle en Direct */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-4 bg-slate-950/90 rounded-xl border border-slate-800">
-            {/* Combattants Joueurs (Barres de vie et d'énergie) */}
-            <div className="space-y-2">
-              <h4 className="text-xs font-bold text-cyan-400 font-mono">Flotte Joueur</h4>
-              <div className="space-y-2">
+          {/* Arène Visuelle en Direct 2D avec Décor Wasteland Holographique */}
+          <div className="relative rounded-2xl overflow-hidden border-2 border-slate-700 shadow-2xl bg-black min-h-[360px] flex flex-col justify-between p-4">
+            {/* Décor 2D Arène */}
+            <img
+              src="/assets/images/battle_wasteland_bg.jpg"
+              alt="Arène de Combat"
+              className="absolute inset-0 w-full h-full object-cover object-center pointer-events-none opacity-80"
+            />
+            <div className="absolute inset-0 bg-slate-950/40 pointer-events-none" />
+
+            {/* Combattants sur le Champ de Bataille (Joueurs Gauche vs Ennemis Droite) */}
+            <div className="relative z-10 grid grid-cols-2 gap-8 items-center h-full my-auto">
+              {/* Équipe Joueur (Gauche) */}
+              <div className="grid grid-cols-2 gap-2.5 max-w-sm">
                 {liveFighters.player.filter(Boolean).map(u => (
-                  <div key={u.id} className={`p-2 rounded-lg bg-slate-900 border ${u.isDead ? 'opacity-30 border-red-900' : 'border-slate-800'}`}>
+                  <div key={u.id} className={`p-2 rounded-xl backdrop-blur-md bg-slate-950/85 border-2 ${u.isDead ? 'opacity-20 border-slate-800' : 'border-cyan-500/80 shadow-lg shadow-cyan-500/20'} transition-all`}>
                     <div className="flex items-center justify-between text-xs mb-1">
-                      <span className="font-bold flex items-center gap-1.5">
-                        <span>{u.avatar}</span> {u.name}
-                      </span>
-                      <span className="font-mono text-[11px] text-emerald-400">
-                        {u.currentHp.toLocaleString()} / {u.maxHp.toLocaleString()} HP
-                      </span>
+                      <span className="text-xl">{u.avatar}</span>
+                      <span className="font-extrabold text-[10px] font-mono text-cyan-300 truncate max-w-[80px]">{u.name}</span>
                     </div>
-                    {/* Barre de vie */}
-                    <div className="w-full h-2 bg-slate-950 rounded-full overflow-hidden border border-slate-800 mb-1">
+                    {/* Barre de PV */}
+                    <div className="w-full h-2 bg-slate-900 rounded-full overflow-hidden border border-slate-700 mb-1">
                       <div
                         className="h-full bg-linear-to-r from-emerald-500 to-green-400 transition-all duration-300"
                         style={{ width: `${Math.max(0, (u.currentHp / u.maxHp) * 100)}%` }}
                       />
                     </div>
-                    {/* Jauge d'énergie (0 à 100) */}
-                    <div className="w-full h-1.5 bg-slate-950 rounded-full overflow-hidden border border-slate-800">
+                    {/* Jauge d'Énergie */}
+                    <div className="w-full h-1.5 bg-slate-900 rounded-full overflow-hidden border border-slate-700">
                       <div
-                        className="h-full bg-linear-to-r from-yellow-500 to-amber-400 transition-all duration-300"
+                        className="h-full bg-linear-to-r from-yellow-400 to-amber-300 transition-all duration-300"
                         style={{ width: `${Math.min(100, (u.energy / 100) * 100)}%` }}
                       />
                     </div>
                   </div>
                 ))}
               </div>
-            </div>
 
-            {/* Combattants Ennemis (Barres de vie et d'énergie) */}
-            <div className="space-y-2">
-              <h4 className="text-xs font-bold text-red-400 font-mono">Flotte Ennemie</h4>
-              <div className="space-y-2">
+              {/* Équipe Ennemie (Droite) */}
+              <div className="grid grid-cols-2 gap-2.5 max-w-sm ml-auto">
                 {liveFighters.enemy.filter(Boolean).map(u => (
-                  <div key={u.id} className={`p-2 rounded-lg bg-slate-900 border ${u.isDead ? 'opacity-30 border-red-900' : 'border-slate-800'}`}>
+                  <div key={u.id} className={`p-2 rounded-xl backdrop-blur-md bg-slate-950/85 border-2 ${u.isDead ? 'opacity-20 border-slate-800' : 'border-red-500/80 shadow-lg shadow-red-500/20'} transition-all`}>
                     <div className="flex items-center justify-between text-xs mb-1">
-                      <span className="font-bold flex items-center gap-1.5">
-                        <span>{u.avatar}</span> {u.name}
-                      </span>
-                      <span className="font-mono text-[11px] text-red-400">
-                        {u.currentHp.toLocaleString()} / {u.maxHp.toLocaleString()} HP
-                      </span>
+                      <span className="font-extrabold text-[10px] font-mono text-red-300 truncate max-w-[80px]">{u.name}</span>
+                      <span className="text-xl">{u.avatar}</span>
                     </div>
-                    {/* Barre de vie */}
-                    <div className="w-full h-2 bg-slate-950 rounded-full overflow-hidden border border-slate-800 mb-1">
+                    {/* Barre de PV */}
+                    <div className="w-full h-2 bg-slate-900 rounded-full overflow-hidden border border-slate-700 mb-1">
                       <div
                         className="h-full bg-linear-to-r from-red-500 to-rose-400 transition-all duration-300"
                         style={{ width: `${Math.max(0, (u.currentHp / u.maxHp) * 100)}%` }}
                       />
                     </div>
-                    {/* Jauge d'énergie */}
-                    <div className="w-full h-1.5 bg-slate-950 rounded-full overflow-hidden border border-slate-800">
+                    {/* Jauge d'Énergie */}
+                    <div className="w-full h-1.5 bg-slate-900 rounded-full overflow-hidden border border-slate-700">
                       <div
-                        className="h-full bg-linear-to-r from-yellow-500 to-amber-400 transition-all duration-300"
+                        className="h-full bg-linear-to-r from-yellow-400 to-amber-300 transition-all duration-300"
                         style={{ width: `${Math.min(100, (u.energy / 100) * 100)}%` }}
                       />
                     </div>
