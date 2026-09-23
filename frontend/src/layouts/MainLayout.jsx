@@ -1,16 +1,19 @@
-// layouts/MainLayout.jsx
+import React from 'react';
 import { Outlet } from 'react-router-dom';
-import Header from '../components/Header.jsx';
-import Footer from '../components/Footer.jsx';
+import Navbar from '../components/Navbar.jsx';
+
 function MainLayout() {
-return (
-<div>
-    <Header />
-        <main>
-            <Outlet />
-        </main>
-    <Footer />
-</div>
-);
+  return (
+    <div className="min-h-screen flex flex-col bg-slate-950 text-slate-100">
+      <Navbar />
+      <main className="flex-1 pb-12">
+        <Outlet />
+      </main>
+      <footer className="border-t border-slate-900 bg-slate-950 py-4 text-center text-xs font-mono text-slate-500">
+        Cars x Battle • Version Bêta Démo Tactique • Hard Sci-Fi Engine
+      </footer>
+    </div>
+  );
 }
+
 export default MainLayout;
