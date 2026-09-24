@@ -1,47 +1,58 @@
 import React from 'react';
-import { IconPlus } from './Icons.jsx';
+import { IconPlus, IconMail } from './Icons.jsx';
 
-function TopBar() {
+function TopBar({ gameStore }) {
+  const { gold, gems } = gameStore;
+
   return (
-    <div className="top-bar">
-      <div className="top-left">
-        <div className="avatar-ring">
-          <svg viewBox="0 0 24 24" fill="var(--orange)">
-            <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
-          </svg>
+    <div className="gxb-topbar">
+      {/* Player Avatar & Realm Info (Matching Screenshot 1) */}
+      <div className="gxb-player-section">
+        <div className="gxb-avatar-frame">
+          <img
+            src="/vehicle-striker.jpg"
+            alt="Commandant"
+            className="avatar-img-circle"
+          />
+          <div className="avatar-lvl-badge">5</div>
         </div>
-        <div className="player-meta">
-          <div className="player-name">Commandant</div>
-          <div className="player-rank">Nv. 24 — Secteur 3</div>
+        <div className="gxb-server-tag">
+          <span className="server-dot" />
+          <span className="server-name">Secteur 1 / Découverte [FR]</span>
         </div>
       </div>
 
-      <div className="top-right">
-        {/* Gold */}
-        <div className="res-pill">
-          <div className="res-icon gold-icon">
-            <svg viewBox="0 0 12 12" fill="#000"><circle cx="6" cy="6" r="4" fill="none" stroke="#000" strokeWidth="1.2"/><text x="6" y="8.5" textAnchor="middle" fontSize="7" fontWeight="bold">C</text></svg>
+      {/* Center Currency Pills */}
+      <div className="gxb-currencies-center">
+        {/* Gold Pill */}
+        <div className="gxb-nav-res-pill">
+          <div className="res-pill-icon coin-glow">
+            <svg viewBox="0 0 16 16" fill="#ffcc00"><circle cx="8" cy="8" r="7" fill="#ffcc00"/><text x="8" y="11" textAnchor="middle" fontSize="8" fontWeight="bold" fill="#000">C</text></svg>
           </div>
-          <span className="res-val">145K</span>
-          <div className="res-plus"><IconPlus /></div>
+          <span className="res-pill-number">{gold.toLocaleString()}</span>
+          <button className="res-pill-add-btn">
+            <IconPlus style={{ width: 8, height: 8, fill: '#fff' }} />
+          </button>
         </div>
 
-        {/* Gems */}
-        <div className="res-pill">
-          <div className="res-icon gem-icon">
-            <svg viewBox="0 0 12 12" fill="#fff"><path d="M6 1L2 5l4 6 4-6-4-4z" fill="none" stroke="#fff" strokeWidth="1" strokeLinejoin="round"/></svg>
+        {/* Gem Pill */}
+        <div className="gxb-nav-res-pill">
+          <div className="res-pill-icon gem-glow">
+            <svg viewBox="0 0 16 16" fill="#00d4ff"><path d="M8 1L2 6l6 9 6-9-6-5z"/></svg>
           </div>
-          <span className="res-val">3.4K</span>
-          <div className="res-plus"><IconPlus /></div>
+          <span className="res-pill-number">{gems.toLocaleString()}</span>
+          <button className="res-pill-add-btn">
+            <IconPlus style={{ width: 8, height: 8, fill: '#fff' }} />
+          </button>
         </div>
+      </div>
 
-        {/* Energy */}
-        <div className="res-pill">
-          <div className="res-icon nrg-icon">
-            <svg viewBox="0 0 12 12" fill="#000"><path d="M7 1L3 7h3l-1 4 4-6H6l1-4z"/></svg>
-          </div>
-          <span className="res-val">95</span>
-        </div>
+      {/* Right Mail Box Button */}
+      <div className="gxb-mail-box-wrapper">
+        <button className="gxb-mail-btn" title="Courrier">
+          <IconMail style={{ width: 18, height: 18, fill: '#3388ff' }} />
+          <span className="mail-notif-dot" />
+        </button>
       </div>
     </div>
   );

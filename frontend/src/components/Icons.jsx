@@ -242,3 +242,77 @@ export const IconScreenDesktop = (props) => (
   </svg>
 );
 
+export const IconBack = (props) => (
+  <svg viewBox="0 0 24 24" {...props}>
+    <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/>
+  </svg>
+);
+
+export const IconHeart = (props) => (
+  <svg viewBox="0 0 24 24" {...props}>
+    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+  </svg>
+);
+
+export const IconSearch = (props) => (
+  <svg viewBox="0 0 24 24" {...props}>
+    <path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0016 9.5 6.5 6.5 0 109.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+  </svg>
+);
+
+export const IconBag = (props) => (
+  <svg viewBox="0 0 24 24" {...props}>
+    <path d="M20 6h-4V4c0-1.11-.89-2-2-2h-4c-1.11 0-2 .89-2 2v2H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-6 0h-4V4h4v2z"/>
+  </svg>
+);
+
+export const IconMenu = (props) => (
+  <svg viewBox="0 0 24 24" {...props}>
+    <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
+  </svg>
+);
+
+export const IconBoot = (props) => (
+  <svg viewBox="0 0 24 24" {...props}>
+    <path d="M19 18l-4-4h-3v-4l-2-2H4v14h15v-4zM6 16v-6h3l2 2v4H6z"/>
+  </svg>
+);
+
+export const IconArrowUp = (props) => (
+  <svg viewBox="0 0 24 24" {...props}>
+    <path d="M4 12l1.41 1.41L11 7.83V20h2V7.83l5.58 5.59L20 12l-8-8-8 8z"/>
+  </svg>
+);
+
+export const IconWingedSword = (props) => (
+  <svg viewBox="0 0 24 24" {...props}>
+    <path d="M12 2L10.5 7h3L12 2zm0 6l-1.5 5h3L12 8zm-8 4c0 3.5 2.5 6.5 6 7.5v-3C8 16 7 14.5 7 12H4zm16 0h-3c0 2.5-1 4-3 4.5v3c3.5-1 6-4 6-7.5zm-7 5.5V22h-2v-4.5c.67.1 1.33.1 2 0z"/>
+  </svg>
+);
+
+export const IconAnkh = (props) => (
+  <svg viewBox="0 0 24 24" {...props}>
+    <circle cx="12" cy="7" r="4" fill="none" stroke="currentColor" strokeWidth="2"/>
+    <path d="M12 11v11M7 15h10" fill="none" stroke="currentColor" strokeWidth="2"/>
+  </svg>
+);
+
+export const IconChat = (props) => (
+  <svg viewBox="0 0 24 24" {...props}>
+    <path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 9h12v2H6V9zm8 5H6v-2h8v2zm4-6H6V6h12v2z"/>
+  </svg>
+);
+
+export const IconUsers = (props) => (
+  <svg viewBox="0 0 24 24" {...props}>
+    <path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/>
+  </svg>
+);
+
+export const IconBook = (props) => (
+  <svg viewBox="0 0 24 24" {...props}>
+    <path d="M18 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 4h5v8l-2.5-1.5L6 12V4z"/>
+  </svg>
+);
+
+

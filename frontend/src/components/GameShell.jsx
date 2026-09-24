@@ -6,32 +6,79 @@ import RosterView from './views/RosterView.jsx';
 import BattleView from './views/BattleView.jsx';
 import GachaView from './views/GachaView.jsx';
 import GuildView from './views/GuildView.jsx';
-
-const TABS = ['lobby', 'roster', 'battle', 'gacha', 'guild'];
+import { useGameStore } from '../gameStore.js';
 
 function GameShell() {
   const [activeTab, setActiveTab] = useState('lobby');
+  const gameStore = useGameStore();
 
-  const renderView = () => {
+  const renderCurrentView = () => {
     switch (activeTab) {
-      case 'lobby':  return <LobbyView />;
-      case 'roster': return <RosterView />;
-      case 'battle': return <BattleView />;
-      case 'gacha':  return <GachaView />;
-      case 'guild':  return <GuildView />;
-      default:       return <LobbyView />;
+      case 'lobby':
+        return (
+          <LobbyView
+            onNavigate={(tab) => setActiveTab(tab)}
+            gameStore={gameStore}
+          />
+        );
+      case 'roster':
+        return (
+          <RosterView
+            onBack={() => setActiveTab('lobby')}
+            gameStore={gameStore}
+          />
+        );
+      case 'battle':
+        return (
+          <BattleView
+            onBack={() => setActiveTab('lobby')}
+            gameStore={gameStore}
+          />
+        );
+      case 'gacha':
+        return (
+          <GachaView
+            onBack={() => setActiveTab('lobby')}
+            gameStore={gameStore}
+          />
+        );
+      case 'guild':
+        return (
+          <GuildView
+            onBack={() => setActiveTab('lobby')}
+            gameStore={gameStore}
+          />
+        );
+      case 'bag':
+      case 'menu':
+      default:
+        return (
+          <LobbyView
+            onNavigate={(tab) => setActiveTab(tab)}
+            gameStore={gameStore}
+          />
+        );
     }
   };
 
   return (
     <div className="game-shell">
-      <TopBar />
+      {/* TopBar matching Screenshot 1 (shown in lobby and default views) */}
+      {activeTab !== 'roster' && (
+        <TopBar gameStore={gameStore} />
+      )}
+
+      {/* Main Viewport */}
       <div className="main-viewport">
         <div key={activeTab} className="view-enter" style={{ position: 'absolute', inset: 0 }}>
-          {renderView()}
+          {renderCurrentView()}
         </div>
       </div>
-      <BottomNav activeTab={activeTab} onTabChange={setActiveTab} />
+
+      {/* BottomNav matching Screenshot 1 */}
+      {activeTab !== 'roster' && (
+        <BottomNav activeTab={activeTab} onTabChange={setActiveTab} />
+      )}
     </div>
   );
 }
