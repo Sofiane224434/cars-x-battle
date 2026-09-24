@@ -1,39 +1,34 @@
-import React from 'react';
-import { Routes, Route, Navigate, useNavigate } from 'react-router-dom';
-import MainLayout from './layouts/MainLayout.jsx';
-import CampusScreen from './pages/CampusScreen.jsx';
-import Hangar from './pages/Hangar.jsx';
-import BattleView from './pages/BattleView.jsx';
-import CampaignView from './pages/CampaignView.jsx';
-import GachaView from './pages/GachaView.jsx';
-import ArenaView from './pages/ArenaView.jsx';
-import GuildTechView from './pages/GuildTechView.jsx';
-import { GameStateProvider } from './game/gameStateContext.jsx';
-
-function AppContent() {
-  const navigate = useNavigate();
-
-  return (
-    <Routes>
-      <Route element={<MainLayout />}>
-        <Route path="/" element={<CampusScreen onNavigate={(dest) => navigate(`/${dest === 'campus' ? '' : dest}`)} />} />
-        <Route path="/hangar" element={<Hangar />} />
-        <Route path="/battle" element={<BattleView />} />
-        <Route path="/campaign" element={<CampaignView />} />
-        <Route path="/gacha" element={<GachaView />} />
-        <Route path="/arena" element={<ArenaView />} />
-        <Route path="/guild-tech" element={<GuildTechView />} />
-      </Route>
-      <Route path="*" element={<Navigate to="/" />} />
-    </Routes>
-  );
-}
+import React, { useState } from 'react';
+import LockScreen from './components/LockScreen.jsx';
+import GameShell from './components/GameShell.jsx';
+import { IconScreenDesktop } from './components/Icons.jsx';
 
 function App() {
+  const [unlocked, setUnlocked] = useState(false);
+  const [isMobileView, setIsMobileView] = useState(false);
+
   return (
-    <GameStateProvider>
-      <AppContent />
-    </GameStateProvider>
+    <div className={`app-root ${isMobileView ? 'force-mobile' : 'desktop-widescreen'}`}>
+      {/* Quick view switcher for testing on PC */}
+      <div className="viewport-toggle-bar">
+        <button
+          onClick={() => setIsMobileView(!isMobileView)}
+          className="toggle-viewport-btn"
+          title="Basculer entre affichage Desktop étendu et Mobile 430px"
+        >
+          <IconScreenDesktop style={{ width: 14, height: 14, fill: '#00d4ff' }} />
+          <span>{isMobileView ? 'Format Mobile (430px) ⇄ Passer en Desktop' : 'Mode Desktop Large ⇄ Passer en Mobile'}</span>
+        </button>
+      </div>
+
+      <div className="game-frame-container">
+        {!unlocked ? (
+          <LockScreen onUnlock={() => setUnlocked(true)} />
+        ) : (
+          <GameShell />
+        )}
+      </div>
+    </div>
   );
 }
 
